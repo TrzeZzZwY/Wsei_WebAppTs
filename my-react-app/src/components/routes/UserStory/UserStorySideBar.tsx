@@ -2,7 +2,7 @@ import { ChangeEvent, FC,useContext, useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import { LinkButton } from '../../common/LinkButton';
 import { ActionButton } from '../../common/ActionButton';
-import { userStoryContext } from '../../../contexts/DependencyProvider'
+import { Context } from '../../../contexts/DependencyProvider'
 import { userStory } from '../../../types/userStory';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
@@ -13,8 +13,8 @@ interface IProps {
 
 }
 
-export const SideBar: FC<IProps> = props =>{
-    const userStorySvc = useContext(userStoryContext);
+export const UserStorySideBar: FC<IProps> = props =>{
+    const context = useContext(Context);
     const { projectId } = useParams<{ projectId: string }>();
 
     const [userStories, setUserStories] = useState<userStory[]>([]);
@@ -26,7 +26,7 @@ export const SideBar: FC<IProps> = props =>{
     const validStatuses = ["todo","doing","done"];
 
     useEffect(() =>{
-        setUserStories(userStorySvc.GetAll(projectId!))
+        setUserStories(context.userStoryService.GetAll(projectId!))
     },[userStoriestChanged, projectId, filterUserStories])
 
     const handleCreateUserStory = (event: React.MouseEvent) =>{
@@ -35,7 +35,7 @@ export const SideBar: FC<IProps> = props =>{
         let priority = prompt("Enter user story priority (low/mid/high):") as "low" | "mid" | "high" ?? "";
 
         if(auth == null || !validPriorities.includes(priority)) return;
-        userStorySvc.Crate({name: name, description: description,priority:priority, projectId: projectId!, state: "todo", ownerId: auth.id });
+        context.userStoryService.Crate({name: name, description: description,priority:priority, projectId: projectId!, state: "todo", ownerId: auth.id });
         setUserStoriesChanged(cng => !cng);
     }
 
@@ -45,19 +45,19 @@ export const SideBar: FC<IProps> = props =>{
         if(sure != "y")
             return;
 
-        userStorySvc.Delete(id);
+        context.userStoryService.Delete(id);
         setUserStoriesChanged(cng => !cng);
     }
 
     const handleEditUserStory = (id: string) =>{
-        let story = userStorySvc.Get(id);
+        let story = context.userStoryService.Get(id);
         if(story == null) return
 
         let status = prompt("Enter user story status (todo/doing/done):") as "todo" | "doing" | "done" ?? "";
         if(auth == null || !validStatuses.includes(status)) return;
     
         story.state = status;
-        userStorySvc.Edit(id,story);
+        context.userStoryService.Edit(id,story);
         setUserStoriesChanged(cng => !cng);
     }
 

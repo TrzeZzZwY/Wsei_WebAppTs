@@ -1,10 +1,10 @@
 import { FC, useContext, useEffect, useState } from 'react';
 import { Navbar } from './NavBar';
-import { SideBar } from './SideBar';
+import { ProjectSideBar } from './Project/ProjectSideBar';
 import { Outlet } from 'react-router-dom';
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import { user, userDto } from '../../types/user';
-import { userContext } from '../../contexts/DependencyProvider';
+import { Context } from '../../contexts/DependencyProvider';
 
 interface IProps {
 
@@ -12,10 +12,10 @@ interface IProps {
 
 export const MainLayout: FC<IProps> = props =>{
     const signIn = useSignIn<user>();
-    const userSvc = useContext(userContext);
+    const context = useContext(Context);
 
     const roles = ["admin","devops","developer"]
-    let users = userSvc.GetAll();
+    let users = context.userService.GetAll();
 
     roles.forEach(role => {
         if(!users.map(e => e.role).includes(role as "admin"|"devops"|"developer")){
@@ -25,11 +25,11 @@ export const MainLayout: FC<IProps> = props =>{
                 role: role as "admin"|"devops"|"developer"
             }   
 
-            userSvc.Crate(user);
+            context.userService.Crate(user);
         }
     })
 
-    let admin = userSvc.GetAll().filter(user => user.role == "admin")[0];
+    let admin = context.userService.GetAll().filter(user => user.role == "admin")[0];
 
     if(signIn({
         auth: {
@@ -47,7 +47,7 @@ export const MainLayout: FC<IProps> = props =>{
             <div className='flex flex-col min-h-screen gap-3'>
                 <Navbar/>
                 <div className='flex flex-row'>
-                    <SideBar/>
+                    <ProjectSideBar/>
                     <Outlet/>
                 </div>
             </div>  

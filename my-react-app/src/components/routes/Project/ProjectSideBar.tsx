@@ -1,8 +1,8 @@
 import { FC, useContext, useEffect, useState } from 'react';
-import { LinkButton } from '../common/LinkButton';
-import { ActionButton } from '../common/ActionButton';
-import { project } from '../../types/project';
-import { projectSeriveContext } from '../../contexts/DependencyProvider'
+import { LinkButton } from '../../common/LinkButton';
+import { ActionButton } from '../../common/ActionButton';
+import { project } from '../../../types/project';
+import { Context } from '../../../contexts/DependencyProvider'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
@@ -10,14 +10,14 @@ interface IProps {
 
 }
 
-export const SideBar: FC<IProps> = props =>{
+export const ProjectSideBar: FC<IProps> = props =>{
 
-    const projectSvc = useContext(projectSeriveContext);
+    const context = useContext(Context);
     const [projects, setProjects] = useState<project[]>([]);
     const [projectChanged, setProjectChanged] = useState(false);
 
     useEffect(() =>{
-        setProjects(projectSvc.GetAllLS())
+        setProjects(context.projectService.GetAllLS())
     },[projectChanged])
 
     const handleCreateProject = (event: React.MouseEvent) =>{
@@ -29,7 +29,7 @@ export const SideBar: FC<IProps> = props =>{
             return;
         }
 
-        projectSvc.CrateLS({name: name, description: description});
+        context.projectService.CrateLS({name: name, description: description});
         setProjectChanged(cng => !cng);
     }
 
@@ -39,7 +39,7 @@ export const SideBar: FC<IProps> = props =>{
         if(sure != "y")
             return;
 
-        projectSvc.DeleteLS(id);
+        context.projectService.DeleteLS(id);
         setProjectChanged(cng => !cng);
     }
 

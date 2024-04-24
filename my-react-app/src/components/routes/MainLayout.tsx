@@ -46,7 +46,7 @@ export const MainLayout: FC<IProps> = props =>{
         <>   
             <div className='flex flex-col min-h-screen gap-3'>
                 <Navbar/>
-                <div className='flex flex-row'>
+                <div className='flex flex-row min-h-screen'>
                     <ProjectSideBar/>
                     <Outlet/>
                 </div>

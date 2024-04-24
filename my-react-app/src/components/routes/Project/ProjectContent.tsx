@@ -9,7 +9,7 @@ interface IProps {
 export const ProjectContent: FC<IProps> = props =>{
     return  (
         <>   
-            <div className='flex flex-row basis-96'>
+            <div className='flex flex-row basis-full'>
                 <UserStorySideBar/>
                 <Outlet/>
             </div>

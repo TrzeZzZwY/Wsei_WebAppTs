@@ -2,6 +2,7 @@ import React, { createContext, useState } from "react";
 import { projectService } from '../api/projectService'
 import { userStoryService } from "../api/userStoryService";
 import { userService } from "../api/userService";
+import { taskService } from "../api/taskService";
 
 interface DependencyProviderProps{
   children: React.ReactNode
@@ -10,13 +11,15 @@ interface DependencyProviderProps{
 export interface DependencyContext{
   projectService: projectService,
   userStoryService: userStoryService,
-  userService: userService
+  userService: userService,
+  taskService: taskService
 }
 
 const dependencyContext: DependencyContext = {
   projectService: new projectService(),
   userStoryService: new userStoryService(),
-  userService: new userService()
+  userService: new userService(),
+  taskService: new taskService()
 } 
 
 export const Context = React.createContext<DependencyContext>(dependencyContext);

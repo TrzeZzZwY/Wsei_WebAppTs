@@ -1,4 +1,4 @@
-import { ChangeEvent, FC,useContext, useEffect, useState } from 'react';
+import { FC,useContext, useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import { LinkButton } from '../../common/LinkButton';
 import { ActionButton } from '../../common/ActionButton';
@@ -19,7 +19,7 @@ export const UserStorySideBar: FC<IProps> = props =>{
 
     const [userStories, setUserStories] = useState<userStory[]>([]);
     const [filterUserStories, setFilterUserStories] = useState<string>("-")
-    const [userStoriestChanged, setUserStoriesChanged] = useState(false);
+    const [userStoriesChanged, setUserStoriesChanged] = useState(false);
     const auth = useAuthUser<user>()
 
     const validPriorities = ["low", "mid", "high"];
@@ -27,7 +27,7 @@ export const UserStorySideBar: FC<IProps> = props =>{
 
     useEffect(() =>{
         setUserStories(context.userStoryService.GetAll(projectId!))
-    },[userStoriestChanged, projectId, filterUserStories])
+    },[userStoriesChanged, projectId, filterUserStories])
 
     const handleCreateUserStory = (event: React.MouseEvent) =>{
         let name = prompt("Enter user story name:") ?? "";

@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
-import { UserStorySideBar } from '../UserStory/UserStorySideBar';
+import { TaskKanBan } from '../Task/TaskKanBan';
 import { Outlet } from 'react-router-dom';
+
 
 interface IProps {
 
@@ -9,8 +10,8 @@ interface IProps {
 export const UserStoryContent: FC<IProps> = props =>{
     return  (
         <>   
-            <div className='flex flex-row basis-96'>
-                <UserStorySideBar/>
+            <div className='flex flex-row basis-full'>
+                <TaskKanBan/>
                 <Outlet/>
             </div>
         </>

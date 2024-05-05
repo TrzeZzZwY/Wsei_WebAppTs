@@ -5,6 +5,7 @@ import { project } from '../../../types/project';
 import { Context } from '../../../contexts/DependencyProvider'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from 'react-router-dom';
 
 interface IProps {
 
@@ -15,6 +16,7 @@ export const ProjectSideBar: FC<IProps> = props =>{
     const context = useContext(Context);
     const [projects, setProjects] = useState<project[]>([]);
     const [projectChanged, setProjectChanged] = useState(false);
+    const navigate = useNavigate()
 
     useEffect(() =>{
         setProjects(context.projectService.GetAllLS())
@@ -41,6 +43,7 @@ export const ProjectSideBar: FC<IProps> = props =>{
 
         context.projectService.DeleteLS(id);
         setProjectChanged(cng => !cng);
+        navigate('/')
     }
 
     return  (

@@ -1,16 +1,16 @@
 import { FC, useEffect, useState } from 'react';
 interface IProps {
     name: string,
-    value: string,
+    value: string | null,
     values: [string,string][],
-    onChange: () => void
+    onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
 }
 
 export const FormSelect: FC<IProps> = props =>{
     return  (
         <div className='m-3 p-2 flex flex-row'>
             <label className='basis-1/5'>{props.name}: </label>
-            <select value={props.value ? props.value : "-"} onChange={props.onChange} className='bg-transparent basis-4/5 bg-slate-800 p-2 border-1 rounded-md'>
+            <select name={props.name} value={props.value ? props.value : "-"} onChange={props.onChange} className='bg-gray-900 basis-4/5 bg-slate-800 p-2 border-1 rounded-md'>
                 <option value="-">-</option>
                 {
                     props.values.map(opt =>

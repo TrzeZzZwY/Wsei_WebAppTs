@@ -1,5 +1,5 @@
 import { FC,useContext, useEffect, useState } from 'react';
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { LinkButton } from '../../common/LinkButton';
 import { ActionButton } from '../../common/ActionButton';
 import { Context } from '../../../contexts/DependencyProvider'
@@ -21,6 +21,7 @@ export const UserStorySideBar: FC<IProps> = props =>{
     const [filterUserStories, setFilterUserStories] = useState<string>("-")
     const [userStoriesChanged, setUserStoriesChanged] = useState(false);
     const auth = useAuthUser<user>()
+    const navigate = useNavigate()
 
     const validPriorities = ["low", "mid", "high"];
     const validStatuses = ["todo","doing","done"];
@@ -47,6 +48,7 @@ export const UserStorySideBar: FC<IProps> = props =>{
 
         context.userStoryService.Delete(id);
         setUserStoriesChanged(cng => !cng);
+        navigate(`/Project/${projectId}`)
     }
 
     const handleEditUserStory = (id: string) =>{
@@ -92,7 +94,7 @@ export const UserStorySideBar: FC<IProps> = props =>{
                     }).map(story =>
                         <div className='flex flex-row gap-1' key={story.id}>
                             <div className='flex basis-3/4 content-center'>
-                                <LinkButton textValue={`${story.name} | ${story.priority}`} path={`story/${story.id}`}/>
+                                <LinkButton textValue={`${story.name} | ${story.priority}`} path={`Story/${story.id}`}/>
                             </div>
                             <div className='basis-1/4'>
                                 <ActionButton action={() =>{

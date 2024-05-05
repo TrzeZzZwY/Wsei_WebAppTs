@@ -60,21 +60,16 @@ export class taskService{
                 str.userStoryId = model.userStoryId;
                 str.estimate = model.estimate;
                 if(isTodo(model)){
-                    (str as TaskTodo).createDate = model.createDate;
                     (str as TaskTodo).state = model.state;
                 }
                 if(isDoing(model)){
-                    (str as TaskDoing).createDate = model.createDate;
                     (str as TaskDoing).state = model.state;
                     (str as TaskDoing).userId = model.userId;
                     (str as TaskDoing).startDate = model.startDate;
                 }
                 if(isDone(model)){
-                    (str as TaskDone).createDate = model.createDate;
                     (str as TaskDone).state = model.state;
-                    (str as TaskDone).startDate = model.startDate;
                     (str as TaskDone).endDate = model.endDate;
-                    (str as TaskDone).userId = model.userId;
                 }
             }
             return str;

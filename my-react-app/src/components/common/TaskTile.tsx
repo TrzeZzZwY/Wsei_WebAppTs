@@ -7,7 +7,7 @@ interface IProps {
 
 export const TaskTile: FC<IProps> = props =>{
     return  (
-        <button onClick={props.action}>     
+        <button onClick={props.action} className='basis-full '>     
             <div className={`flex flex-row px-3 py-2 border-2 m-4 justify-center hover:text-amber-600 hover:border-amber-600`}>
                 <span>{props.textValue}</span>
             </div>

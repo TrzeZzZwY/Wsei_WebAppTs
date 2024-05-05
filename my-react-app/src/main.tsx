@@ -17,7 +17,7 @@ const store = createStore<user>({
 
 store.tokenObject
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <div className='bg-slate-900 min-h-screen text-slate-100'>
+  <div className='min-h-screen'>
       <React.StrictMode>
         <DependencyProvider>
           <AuthProvider store={store}>

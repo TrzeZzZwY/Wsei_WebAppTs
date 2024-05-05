@@ -156,7 +156,7 @@ export const TaskKanBan: FC<IProps> = props =>{
     }
     return  (
         <>   
-            <div className='flex flex-row basis-2/3 bg-slate-700 p-3'>
+            <div className='flex flex-row basis-2/3 dark:bg-slate-700 p-3'>
                 <div className='flex flex-col basis-1/3 border-2'>
                     <div className='flex flex-row justify-center'>
                         <span>TODO</span>
@@ -188,7 +188,7 @@ export const TaskKanBan: FC<IProps> = props =>{
                     )}
                 </div>
             </div> 
-            <div className='flex flex-col basis-1/3 bg-slate-600 p-3 gap-2'>
+            <div className='flex flex-col basis-1/3 dark:bg-slate-600 p-3 gap-2'>
                 <ActionButton textValue='Add new Task' action={handleAddTask}/>
                 {
                     selectedTask ?     
@@ -200,11 +200,11 @@ export const TaskKanBan: FC<IProps> = props =>{
                             <FormSelect name='Priority' value={selectedPriority} values={validPriorities.map(e => [e,e])} onChange={handleChangePriority}/>
                             <FormSelect name='Estimate' value={`${selectedEstimate}`} values={validEstimate.map(e => [`${e}`,`${e}`])} onChange={handleChangeEstimate}/>
                             <FormSelect name='User' value={selectedUserId} values={users.map(e => [e.id,e.name])} onChange={handleChangeUserId}/>
-                            <input className='m-2 bg-slate-800 hover:bg-emerald-700 p-2 border-1 rounded-md' type="submit" value="Save" />
+                            <input className='m-2 dark:bg-slate-800 hover:bg-emerald-700 p-2 border-2 border-solid border-emerald-700 rounded-md' type="submit" value="Save" />
                         </form>
-                        <ActionButton textValue='Delete task' action={() => handleDeleteTask(selectedTask.id)}>
+                        
+                        <ActionButton textValue='Delete task' action={() => handleDeleteTask(selectedTask.id)}/>
 
-                        </ActionButton> 
                         {
                             isDoing(selectedTask) && selectedTask.userId ?
                             <ActionButton textValue='Finish task' action={() => handleFinishTask(selectedTask.id)}>

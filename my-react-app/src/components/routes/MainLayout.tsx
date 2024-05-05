@@ -4,7 +4,7 @@ import { ProjectSideBar } from './Project/ProjectSideBar';
 import { Outlet } from 'react-router-dom';
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import { user, userDto } from '../../types/user';
-import { Context } from '../../contexts/DependencyProvider';
+import { Context, useTheme } from '../../contexts/DependencyProvider';
 
 interface IProps {
 
@@ -13,10 +13,11 @@ interface IProps {
 export const MainLayout: FC<IProps> = props =>{
     const signIn = useSignIn<user>();
     const context = useContext(Context);
-
-    const roles = ["admin","devops","developer"]
+    const theme = useTheme();
+    useEffect(()=>{
+    },[theme.darkMode])
+    const roles = ["admin","devops","developer"];
     let users = context.userService.GetAll();
-
     roles.forEach(role => {
         if(!users.map(e => e.role).includes(role as "admin"|"devops"|"developer")){
             let user: userDto = {
@@ -28,7 +29,6 @@ export const MainLayout: FC<IProps> = props =>{
             context.userService.Crate(user);
         }
     })
-
     let admin = context.userService.GetAll().filter(user => user.role == "admin")[0];
 
     if(signIn({
@@ -44,7 +44,7 @@ export const MainLayout: FC<IProps> = props =>{
     }
     return  (
         <>   
-            <div className='flex flex-col min-h-screen gap-3'>
+            <div className={`${theme.darkMode ? "dark" : ""} bg-neutral-100 dark:bg-slate-900 dark:text-slate-100 flex flex-col min-h-screen gap-3`}>
                 <Navbar/>
                 <div className='flex flex-row min-h-screen'>
                     <ProjectSideBar/>

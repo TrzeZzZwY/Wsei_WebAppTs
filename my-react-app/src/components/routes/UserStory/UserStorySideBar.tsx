@@ -78,7 +78,7 @@ export const UserStorySideBar: FC<IProps> = props =>{
                 </div>
                 <div className='flex flex-row gap-3'>
                     <span>Select status:</span>
-                    <select value={filterUserStories} onChange={handleFilterChange} className='bg-gray-900'>
+                    <select value={filterUserStories} onChange={handleFilterChange} className='dark:bg-gray-900'>
                         <option value="-">-</option>
                         {
                             validStatuses.map(opt =>

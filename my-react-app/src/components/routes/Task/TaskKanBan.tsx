@@ -4,7 +4,7 @@ import { ActionButton } from '../../common/ActionButton';
 import { Context } from '../../../contexts/DependencyProvider'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { user } from '../../../types/user';
-import { Task, TaskDoing, TaskDone, TaskDto, TaskTodo, isDoing } from '../../../types/task';
+import { Task, TaskDoing, TaskDone, TaskDto, TaskTodo, isDoing, isDone } from '../../../types/task';
 import { TaskTile } from '../../common/TaskTile';
 import { FormInput } from '../../common/FormInput';
 import { FormSelect } from '../../common/FormSelect';
@@ -90,6 +90,8 @@ export const TaskKanBan: FC<IProps> = props =>{
             }
 
             context.taskService.Edit(data.id, task)
+            setSelectedTaskId(task as Task);
+
         }else{
             const task:TaskTodo = {
                 name: data.name,
@@ -100,9 +102,10 @@ export const TaskKanBan: FC<IProps> = props =>{
                 userStoryId: storyId!,
                 createDate: 0
             }
-
             context.taskService.Edit(data.id, task)
+            setSelectedTaskId(task as Task);
         }
+
         setTasksChanged(cng => !cng);
     }
 
@@ -112,21 +115,27 @@ export const TaskKanBan: FC<IProps> = props =>{
 
         setSelectedPriority(option as "p0" | "p1" | "p2");
     }
+
     const handleChangeEstimate = (event: React.ChangeEvent<HTMLSelectElement>)=>{
         let option = event.target.value
         if(option != "-" && !validEstimate.includes(+option)) return;
 
         setSelectedEstimate(+option as 0 | 1 | 2 | 3 | 5 | 8 | 13 | 21);
     }
+
     const handleChangeUserId = (event: React.ChangeEvent<HTMLSelectElement>)=>{
         let option = event.target.value
-        if(option == "-")
+        if(option == "-"){
             setSelectedUserId(null)
-        setSelectedUserId(option);
+        }else{
+            setSelectedUserId(option);
+        }
+        setTasksChanged(cng => !cng);
     }
+
     const handleFinishTask = (taskId: string)=>{
         let task = context.taskService.Get(taskId);
-
+        console.log(selectedTask)
         if(task && isDoing(task)){
             const finishedTask: TaskDone = {
                 name: task.name,
@@ -141,6 +150,32 @@ export const TaskKanBan: FC<IProps> = props =>{
                 endDate: Date.now()
             }
             context.taskService.Edit(taskId, finishedTask)
+            task = finishedTask as Task
+            task.id = taskId;
+            setSelectedTaskId(task);
+            setTasksChanged(cng => !cng);
+        }
+    }
+
+    const handleUnfinishTask = (taskId: string)=>{
+        let task = context.taskService.Get(taskId);
+
+        if(task && isDone(task)){
+            const unfinishedTask: TaskDoing = {
+                name: task.name,
+                description: task.description,
+                priority: task.priority,
+                estimate: task.estimate,
+                userId: task.userId,
+                state: "doing",
+                userStoryId: task.userStoryId!,
+                createDate: 0,
+                startDate: task.startDate
+            }
+            context.taskService.Edit(taskId, unfinishedTask)
+            task = unfinishedTask as Task;
+            task.id = taskId
+            setSelectedTaskId(task);
             setTasksChanged(cng => !cng);
         }
     }
@@ -152,6 +187,7 @@ export const TaskKanBan: FC<IProps> = props =>{
             return;
 
         context.taskService.Delete(taskId);
+        setSelectedTaskId(null);
         setTasksChanged(cng => !cng);
     }
     return  (
@@ -200,6 +236,20 @@ export const TaskKanBan: FC<IProps> = props =>{
                             <FormSelect name='Priority' value={selectedPriority} values={validPriorities.map(e => [e,e])} onChange={handleChangePriority}/>
                             <FormSelect name='Estimate' value={`${selectedEstimate}`} values={validEstimate.map(e => [`${e}`,`${e}`])} onChange={handleChangeEstimate}/>
                             <FormSelect name='User' value={selectedUserId} values={users.map(e => [e.id,e.name])} onChange={handleChangeUserId}/>
+                            {
+                            isDoing(selectedTask) || isDone(selectedTask) ?
+                            <div className='m-3 p-2 flex flex-row'>
+                                <span className='basis-1/5'>Start date: </span>
+                                <span className='basis-4/5 dark:bg-slate-800 p-2 border-1 rounded-md'>{new Date(selectedTask.startDate).toUTCString()}</span>
+                            </div>:<></>
+                            }
+                            {
+                            isDone(selectedTask) ?
+                            <div className='m-3 p-2 flex flex-row'>
+                                <span className='basis-1/5'>End date: </span>
+                                <span className='basis-4/5 dark:bg-slate-800 p-2 border-1 rounded-md'>{new Date(selectedTask.endDate).toUTCString()}</span>
+                            </div>:<></>
+                            }
                             <input className='m-2 dark:bg-slate-800 hover:bg-emerald-700 p-2 border-2 border-solid border-emerald-700 rounded-md' type="submit" value="Save" />
                         </form>
                         
@@ -208,6 +258,14 @@ export const TaskKanBan: FC<IProps> = props =>{
                         {
                             isDoing(selectedTask) && selectedTask.userId ?
                             <ActionButton textValue='Finish task' action={() => handleFinishTask(selectedTask.id)}>
+
+                            </ActionButton> 
+                            :
+                            <></>
+                        }
+                        {
+                            isDone(selectedTask) && selectedTask.userId ?
+                            <ActionButton textValue='Unfinish' action={() => handleUnfinishTask(selectedTask.id)}>
 
                             </ActionButton> 
                             :

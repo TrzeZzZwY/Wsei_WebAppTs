@@ -3,6 +3,7 @@ import { projectService } from '../api/projectService'
 import { userStoryService } from "../api/userStoryService";
 import { userService } from "../api/userService";
 import { taskService } from "../api/taskService";
+import { jwtService } from "../api/jwtService";
 
 interface DependencyProviderProps{
   children: React.ReactNode
@@ -13,6 +14,7 @@ export interface DependencyContext{
   userStoryService: userStoryService,
   userService: userService,
   taskService: taskService,
+  jwtService: jwtService,
   Theme: boolean
 }
 
@@ -21,6 +23,7 @@ const dependencyContext: DependencyContext = {
   userStoryService: new userStoryService(),
   userService: new userService(),
   taskService: new taskService(),
+  jwtService: new jwtService(),
   Theme: true
 } 
 

@@ -4,6 +4,7 @@ import { MainLayout } from './MainLayout';
 import { LinkButton } from '../common/LinkButton';
 import { ProjectContent } from './Project/ProjectContent';
 import { UserStoryContent } from './UserStory/UserStoryContent';
+import { Login } from './Login';
 
 interface IProps{
 
@@ -21,6 +22,7 @@ export const Router: FC<IProps> = props =>{
                     </Route>
                 </Route>
             </Route>
+            <Route path='/login'element={<Login/>} />
         </Routes>
     )
 }

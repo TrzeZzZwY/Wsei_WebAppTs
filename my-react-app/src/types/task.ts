@@ -3,15 +3,15 @@ export type Task = Entity & TaskDto;
 export type TaskDto = TaskTodo | TaskDoing | TaskDone;
 
 export function isTodo(task: Task | TaskDto) : task is TaskTodo{
-    return (task as TaskTodo).name !== "todo"; 
+    return (task as TaskTodo).state === "todo"; 
 }
 
 export function isDoing(task: Task | TaskDto) : task is TaskDoing{
-    return (task as TaskDoing).name !== "Todo"; 
+    return (task as TaskDoing).state === "doing"; 
 }
 
 export function isDone(task: Task | TaskDto) : task is TaskDone{
-    return (task as TaskDone).name !== "Todo"; 
+    return (task as TaskDone).state === "done"; 
 }
 
 interface Entity {

@@ -1,5 +1,4 @@
-import { FC, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { FC } from 'react';
 interface IProps {
     name: string,
     type: string,
@@ -13,7 +12,7 @@ export const FormInput: FC<IProps> = props =>{
             {props.type == "textarea" ?
             <textarea className='basis-4/5 dark:bg-slate-800 p-2 border-1 rounded-md resize-none' maxLength={300} rows={6} cols={40} name={props.name} defaultValue={props.value}/>
             :
-            <input className='basis-4/5 dark:bg-slate-800 p-2 border-1 rounded-md' name={props.name} type={props.type} defaultValue={props.value}/>
+            <input className='basis-4/5 dark:bg-slate-800 p-2 border-1 rounded-md' name={props.name} type={props.type} value={props.value}/>
             }
         </div>
     )

@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useRef, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import { ActionButton } from '../../common/ActionButton';
 import { Context } from '../../../contexts/DependencyProvider'
@@ -54,13 +54,14 @@ export const TaskKanBan: FC<IProps> = props =>{
 
     const handleTileClick = (taskId: string) =>{
         let task = context.taskService.Get(taskId);
-
+        console.log(task)
         if(task){
             setSelectedTaskId(task);
             setSelectedEstimate(task.estimate)
             setSelectedPriority(task.priority)
             setSelectedUserId(null)
             isDoing(task) && setSelectedUserId(task.userId)
+            setTasksChanged(cng => !cng);
         }
     } 
 
